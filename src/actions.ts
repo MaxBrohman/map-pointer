@@ -6,3 +6,10 @@ export const mapPointSelected = (coords: number[]): IUpdatedAction => {
         payload: coords
     }
 };
+
+export const onSearchInput = (term: string): IUpdatedAction => {
+    return {
+        type: 'ON_SEARCH_INPUT',
+        payload: term
+    }
+};

@@ -6,11 +6,10 @@ import { IState, IPointsListProps, IAdress } from '../../typings';
 import './points-list.sass';
 
 const PointsList = (props: IPointsListProps): JSX.Element => {
+    
     return (
         <ul className="list-group">
-            { props.points.map(item => {
-                return <PointsListItem />
-            }) }
+            { props.points.map(item => <PointsListItem name={ item.name } key={ item.id } />) }
         </ul>
     );
 };
