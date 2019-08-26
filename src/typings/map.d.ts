@@ -1,6 +1,5 @@
 export interface IMapProps {
-    points: number[];
-    onPointChoice: (coords: number[]) => void;
+    router: any;
 }
 
 export interface IMapEvent extends Event {

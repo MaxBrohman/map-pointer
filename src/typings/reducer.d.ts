@@ -2,10 +2,12 @@ import { Action } from 'redux';
 
 export interface IState {
     points: IAdress[];
-    newPlacesName: string;
+    newPointName: string;
     newPlacesCoords: number[];
-    adressSearchTerm: string;
     error: boolean;
+    loading: boolean;
+    map: any;
+    router: any;
 }
 
 export interface IAdress {

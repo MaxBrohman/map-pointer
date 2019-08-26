@@ -18,14 +18,25 @@ const initialState: IState = {
             id: 3,
         }
     ],
-    newPlacesName: '',
     newPlacesCoords: [0, 0],
-    adressSearchTerm: '',
-    error: false
+    newPointName: '',
+    error: false,
+    loading: true,
+    map: null,
+    router: null
 };
 
 export const reducer = (state: IState = initialState, action: IUpdatedAction): IState => {
     switch(action.type){
+        case 'MAP_LOADED': {
+            return {
+                ...state,
+                error: false,
+                loading: false,
+                map: action.payload.map,
+                router: action.payload.router
+            }
+        }
         case 'MAP_POINT_SELECTED': {
             const newPoint = {
                 name: 'route 1',
@@ -37,11 +48,18 @@ export const reducer = (state: IState = initialState, action: IUpdatedAction): I
                 points: [...state.points, newPoint]
             }
         }
-        case 'ON_SEARCH_INPUT': {
+        case 'ON_NAME_INPUT': {
             return {
                 ...state,
-                adressSearchTerm: action.payload
+                newPointName: action.payload
             }
+        }
+        case 'NEW_LIST_POINT_ADDED': {
+            return {
+                ...state,
+                points: action.payload,
+                newPointName: ''
+            };
         }
         default: {
             return state;

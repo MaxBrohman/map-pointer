@@ -1,4 +1,4 @@
+export * from './get-coords-from-points';
 export * from './get-index';
-export * from './get-optimized-string';
 export * from './on-change-helper';
-export * from './on-keydown-helper';
+export * from './update-map-reference-points';
