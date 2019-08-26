@@ -61,6 +61,12 @@ export const reducer = (state: IState = initialState, action: IUpdatedAction): I
                 newPointName: ''
             };
         }
+        case 'MAP_POINTS_LIST_UPDATED': {
+            return {
+                ...state,
+                points: action.payload
+            }
+        }
         default: {
             return state;
         }

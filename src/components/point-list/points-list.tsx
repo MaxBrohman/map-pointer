@@ -9,7 +9,7 @@ const PointsList = (props: IPointsListProps): JSX.Element => {
     
     return (
         <ul className="list-group">
-            { props.points.map(item => <PointsListItem name={ item.name } key={ item.id } />) }
+            { props.points.map(({ name, id }) => <PointsListItem name={ name } key={ id } id={id} />) }
         </ul>
     );
 };

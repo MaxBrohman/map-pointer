@@ -26,3 +26,10 @@ export const onAppLoaded = (): IUpdatedAction => {
         type: 'APP_LOADED'
     }
 };
+
+export const deleteItem = (id: number): IUpdatedAction => {
+    return {
+        type: 'DELETE_ITEM',
+        payload: id
+    }
+};
