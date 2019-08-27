@@ -1,8 +1,6 @@
-export interface IPLIMapDispatchToProps {
-    onDelete: (id: number) => void;
-}
-
-export interface IPointsListItemProps extends IPLIMapDispatchToProps {
+export interface IPointsListItemProps {
     name: string;
     id: number;
+    onDelete: (id: number) => void;
+    onEdit: (id: number) => void;
 }

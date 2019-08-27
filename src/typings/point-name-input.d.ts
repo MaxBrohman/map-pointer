@@ -5,4 +5,5 @@ export interface IMapFormDispatchToProps {
 
 export interface IPointNameInputProps extends IMapFormDispatchToProps {
     name: string;
+    btnLabel: string;
 }

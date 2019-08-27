@@ -6,15 +6,17 @@ import Spinner from '../spinner';
 import { connect } from 'react-redux';
 import { IState, IAppProps, IAppMapDispatchToProps, IAppMapStateToProps } from '../../typings';
 import { Dispatch } from 'redux';
-import { onAppLoaded } from '../../actions';
+import { onAppLoaded, onNameInput, newPointAdded } from '../../actions';
 
 import './app.sass';
 
 class App extends React.Component<IAppProps> {
     public props: IAppProps;
+    private inputBtnLabel: string;
     constructor(props: IAppProps){
         super(props);
         this.props = props;
+        this.inputBtnLabel = 'AddPoint';
     };
 
     public componentDidMount(): void {
@@ -22,10 +24,16 @@ class App extends React.Component<IAppProps> {
     }
 
     public render(): JSX.Element {
+        const { name, onInput, onFormSubmit } = this.props;
         return (
             <div className="container d-flex align-items-stretch app-container">
                 <div className="d-flex flex-column flex-grow-1 left-container">
-                    <PointNameInput />
+                    <PointNameInput
+                        btnLabel={ this.inputBtnLabel }
+                        name ={ name }
+                        onInput={ onInput }
+                        onFormSubmit={ onFormSubmit }
+                    />
                     <PointsList />
                 </div>
                 <div className="d-flex flex-column flex-grow-1">
@@ -40,13 +48,16 @@ class App extends React.Component<IAppProps> {
 const mapStateToProps = (state: IState): IAppMapStateToProps => {
     return {
         loading: state.loading,
-        error: state.error
+        error: state.error,
+        name: state.newPointName
     }
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IAppMapDispatchToProps => {
     return {
-        onAppLoaded: () => dispatch(onAppLoaded())
+        onAppLoaded: () => dispatch(onAppLoaded()),
+        onInput: (name: string) => dispatch(onNameInput(name)),
+		onFormSubmit: (name: string) => dispatch(newPointAdded(name))
     }
 };
 

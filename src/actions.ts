@@ -33,3 +33,27 @@ export const deleteItem = (id: number): IUpdatedAction => {
         payload: id
     }
 };
+
+export const editPointItem = (id: number): IUpdatedAction => {
+    return {
+        type: 'EDIT_POINT_ITEM',
+        payload: id
+    }
+};
+
+export const editingPointName = (name: string): IUpdatedAction => {
+    return {
+        type: 'EDIT_POINT_NAME',
+        payload: name
+    }
+};
+
+export const pointUpdated = (id: number, prop: string | number[] | boolean): IUpdatedAction => {
+    return {
+        type: 'POINT_UPDATED',
+        payload: {
+            prop,
+            id
+        }
+    }
+};

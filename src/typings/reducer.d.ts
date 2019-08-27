@@ -14,6 +14,7 @@ export interface IAdress {
     name: string;
     coords: number[];
     id: number;
+    isEditing: boolean;
 }
 
 export interface IUpdatedAction extends Action {

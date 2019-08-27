@@ -8,7 +8,8 @@ const createNewPoint = (name: string, coords: number[]): IAdress => {
     return {
         name,
         coords,
-        id: new Date().getTime()
+        id: new Date().getTime(),
+        isEditing: false
     }
 };
 

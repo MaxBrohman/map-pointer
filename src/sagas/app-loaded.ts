@@ -1,6 +1,6 @@
 import { takeLeading, put, select } from 'redux-saga/effects';
 import { getPoints } from './selectors';
-import { getCoordsFromPoints } from '../utils';
+import { getCoordsFromPoints, updateMapReferencePoints, debounce } from '../utils';
 import { IAdress } from '../typings';
 import { Dispatch } from 'redux';
 
@@ -28,27 +28,43 @@ const routerCreator = (map: any, points: IAdress[], dispatch: Dispatch): any => 
     });
     // enables dynamic routing changes
     router.editor.start();
-
     map.geoObjects.add(router);
     // fits map to container size
     map.container.fitToViewport();
 
-    router.getWayPoints().events.add('dragstart', (evt: any) => {
-        const targetCoords = evt.get('target').geometry.getCoordinates();
-        // get to know dragging point id
-        const draggingPoint = points.filter(point => point.coords[0] === targetCoords[0] 
-                                                    && point.coords[1] === targetCoords[1])[0];
+    const dispatchDragStart = (evt: any): void => {
+        const targetIdx = evt.get('target').properties.get('index');
         // update point list with new coords
         router.getWayPoints().events.add('dragend', (evt: any) => {
+            console.log('target idx ', targetIdx);
             dispatch({
-                type: 'POINT_UPDATED',
+                type: 'POINT_DRAGGED',
                 payload: {
-                    prop: evt.get('target').geometry.getCoordinates(), 
-                    point: draggingPoint
+                    coords: evt.get('target').geometry.getCoordinates(), 
+                    idx: targetIdx
                 }
             });
         });
-    });
+    };
+    const debouncedDrag = debounce(dispatchDragStart, 1000);
+    
+    router.getWayPoints().events.add('dragstart', debouncedDrag); 
+    // (evt: any) => {
+        
+        // const targetIdx = evt.get('target').properties.get('index');
+        // // update point list with new coords
+        // router.getWayPoints().events.add('dragend', (evt: any) => {
+        //     console.log('target idx ', targetIdx);
+        //     dispatch({
+        //         type: 'POINT_DRAGGED',
+        //         payload: {
+        //             coords: evt.get('target').geometry.getCoordinates(), 
+        //             idx: targetIdx
+        //         }
+        //     });
+        // });
+        
+    // });
     return router;
 };
 
@@ -70,6 +86,9 @@ const loadMap = (dispatch: Dispatch) => {
     return function* loadMap (): IterableIterator<any> {
         const points = yield select(getPoints);
         const { map, router } = yield enableMapApi(points, dispatch);
+        if (points.length) {
+            yield updateMapReferencePoints(router, points);
+        }
         yield put({
             type: 'MAP_LOADED',
             payload: {

@@ -1,7 +1,7 @@
 import React from 'react';
-import PointsListItem from '../points-list-item';
 import { connect } from 'react-redux';
 import { IState, IPointsListProps, IAdress } from '../../typings';
+import PointsListItemContainer from '../points-list-item-container';
 
 import './points-list.sass';
 
@@ -9,7 +9,12 @@ const PointsList = (props: IPointsListProps): JSX.Element => {
     
     return (
         <ul className="list-group">
-            { props.points.map(({ name, id }) => <PointsListItem name={ name } key={ id } id={id} />) }
+            { props.points.map(({ name, id, isEditing }) => <PointsListItemContainer
+                                                                name={ name }
+                                                                key={ id }
+                                                                id={id}
+                                                                isEditing={ isEditing }
+                                                            />) }
         </ul>
     );
 };

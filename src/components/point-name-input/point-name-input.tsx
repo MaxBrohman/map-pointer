@@ -1,15 +1,11 @@
 import React from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
-import { IPointNameInputProps, IMapFormDispatchToProps } from '../../typings/point-name-input';
-import { IState } from '../../typings';
-import { onNameInput, newPointAdded } from '../../actions';
+import { IPointNameInputProps } from '../../typings/point-name-input';
 import { onChangeHelper } from '../../utils';
 
 import './point-name-input.sass';
 
 const PointNameInput = (props: IPointNameInputProps): JSX.Element => {
-  const { name, onInput, onFormSubmit } = props;
+  const { name, onInput, onFormSubmit, btnLabel } = props;
 
   const onNameSubmit = (evt: React.FormEvent): void => {
 		evt.preventDefault();
@@ -31,23 +27,10 @@ const PointNameInput = (props: IPointNameInputProps): JSX.Element => {
 				required
 			/>
 			<div className="input-group-append">
-				<button className="btn btn-outline-secondary" type="submit">Add point</button>
+				<button className="btn btn-outline-secondary" type="submit">{ btnLabel }</button>
 			</div>
 		</form>
   	);
 };
 
-const mapStateToProps = (state: IState): { name: string } => {
-	return {
-		name: state.newPointName
-	}
-};
-
-const mapDispatchToProps = (dispatch: Dispatch): IMapFormDispatchToProps => {
-	return {
-		onInput: (name: string) => dispatch(onNameInput(name)),
-		onFormSubmit: (name: string) => dispatch(newPointAdded(name))
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PointNameInput);
+export default PointNameInput;

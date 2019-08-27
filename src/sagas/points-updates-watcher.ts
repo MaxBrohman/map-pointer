@@ -1,21 +1,22 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 import { getPoints } from './selectors';
-import { getIndex, getAfterIdxArray, getBeforeIdxArray } from '../utils';
+import { getIndex, updateArrayWithNewItem } from '../utils';
 import { IAdress, IUpdatedAction } from '../typings';
 
-// type of action depends on props type
-// let actionName: string;
-
-// updates map point with either new name, or new coordinates
-const updatePointWithNewProp = (prop: number[] | string, point: IAdress): IAdress => {
+// updates map point with either new name, coordinates, or editing status
+const updatePointWithNewProp = (prop: number[] | string | boolean, idx: number, points: IAdress[]): IAdress => {
+    const point = points[idx];
     if (typeof prop === 'string') {
-        // actionName = 'UPDATE_ONLY_MAP_LIST';
         return {
             ...point,
             name: prop
         };
+    } else if (typeof prop === 'boolean'){
+        return {
+            ...point,
+            isEditing: !point.isEditing
+        };
     } else {
-        // actionName = 'UPDATE_ONLY_POINTS_ON_MAP';
         return {
             ...point,
             coords: prop
@@ -23,17 +24,11 @@ const updatePointWithNewProp = (prop: number[] | string, point: IAdress): IAdres
     }
 };
 
-// replace point in points array with updated one
-const updatePointsWithNewPoint = (oldPoints: IAdress[], newPoint: IAdress): IAdress[] => {
-    const updatedPointsIdx = getIndex(oldPoints, newPoint.id);
-    return [...getBeforeIdxArray(oldPoints, updatedPointsIdx), newPoint, ...getAfterIdxArray(oldPoints, updatedPointsIdx)];
-};
-
-function* updateMapPoints(action: IUpdatedAction): IterableIterator<any> {
-    const { prop, point } = action.payload;
-    const newPoint = yield updatePointWithNewProp(prop, point);
+function* updateMapPoints({ payload: { prop, id } }: IUpdatedAction): IterableIterator<any> {
     const oldPoints = yield select(getPoints);
-    const updatedPoints = yield updatePointsWithNewPoint(oldPoints, newPoint);
+    const idx = yield getIndex(oldPoints, id);
+    const newPoint = yield updatePointWithNewProp(prop, idx, oldPoints);
+    const updatedPoints = yield updateArrayWithNewItem(oldPoints, newPoint, idx);
     yield put({
         type: 'MAP_POINTS_LIST_UPDATED',
         payload: updatedPoints

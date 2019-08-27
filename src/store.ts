@@ -4,7 +4,7 @@ import { reducer } from './reducer';
 import storage from 'redux-persist/lib/storage';
 import hardSet from 'redux-persist/es/stateReconciler/hardSet';
 import createSagaMiddleware from 'redux-saga';
-import { watchNewPoint, onAppLoaded, watchPointsUpdates, watchDeleteItem } from './sagas';
+import { watchNewPoint, onAppLoaded, watchPointsUpdates, watchDeleteItem, watchPointsDrag } from './sagas';
 
 const persistConfig = {
     key: 'root',
@@ -23,3 +23,4 @@ sagaMiddleware.run(onAppLoaded((store.dispatch)));
 sagaMiddleware.run(watchNewPoint);
 sagaMiddleware.run(watchPointsUpdates);
 sagaMiddleware.run(watchDeleteItem);
+sagaMiddleware.run(watchPointsDrag);

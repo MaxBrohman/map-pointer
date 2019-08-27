@@ -1,23 +1,7 @@
 import { IState, IUpdatedAction } from './typings';
 
 const initialState: IState = {
-    points: [
-        {
-            name: 'point 1',
-            coords: [55.72869417575584, 37.61394531250001],
-            id: 1,
-        },
-        {
-            name: 'point 2',
-            coords: [55.79605808882297, 37.70252258300783],
-            id: 2,
-        },
-        {
-            name: 'point 3',
-            coords: [55.67479646695159, 37.73891479492188],
-            id: 3,
-        }
-    ],
+    points: [],
     newPlacesCoords: [0, 0],
     newPointName: '',
     error: false,
@@ -27,25 +11,16 @@ const initialState: IState = {
 };
 
 export const reducer = (state: IState = initialState, action: IUpdatedAction): IState => {
-    switch(action.type){
+    console.log(action.type, action.payload);
+    switch (action.type) {
         case 'MAP_LOADED': {
+            const { map, router } = action.payload;
             return {
                 ...state,
                 error: false,
                 loading: false,
-                map: action.payload.map,
-                router: action.payload.router
-            }
-        }
-        case 'MAP_POINT_SELECTED': {
-            const newPoint = {
-                name: 'route 1',
-                coords: action.payload,
-                id: new Date().getTime()
-            };
-            return {
-                ...state,
-                points: [...state.points, newPoint]
+                map: map,
+                router: router
             }
         }
         case 'ON_NAME_INPUT': {
