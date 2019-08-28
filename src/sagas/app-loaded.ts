@@ -87,7 +87,6 @@ const loadMap = (dispatch: Dispatch) => {
     };
 };
 
-
 export const onAppLoaded = (dispatch: Dispatch) => {
     return function* onAppLoaded (): IterableIterator<any> {
         yield takeLeading('APP_LOADED', loadMap(dispatch));

@@ -38,7 +38,6 @@ const PointsListItemContainer = (props: IPointsListItemContainerProps): JSX.Elem
     );
 };
 
-
 const mapDispatchToProps = (dispatch: Dispatch): IPLICMapDispatchToProps => {
     return {
         onDelete: (id: number) => dispatch(deleteItem(id)),

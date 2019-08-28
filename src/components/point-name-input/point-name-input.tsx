@@ -14,7 +14,7 @@ const PointNameInput = (props: IPointNameInputProps): JSX.Element => {
 
   	return (
 		<form 
-			className="input-group mb-3"
+			className="input-group name-input-form"
 			onSubmit={onNameSubmit}
 		>
 			<input 

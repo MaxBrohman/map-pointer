@@ -48,7 +48,7 @@ export const editingPointName = (name: string): IUpdatedAction => {
     }
 };
 
-export const pointUpdated = (id: number, prop: string | number[] | boolean): IUpdatedAction => {
+export const pointUpdated = (id: number, prop: string | boolean): IUpdatedAction => {
     return {
         type: 'POINT_UPDATED',
         payload: {
