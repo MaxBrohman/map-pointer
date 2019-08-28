@@ -1,6 +1,7 @@
 {
   "name": "map-pointer",
   "version": "0.1.0",
+  "homepage": "https://maxbrohman.github.io/map-pointer/",
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.17",
