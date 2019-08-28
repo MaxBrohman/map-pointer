@@ -1,6 +1,6 @@
 import { takeLeading, put, select } from 'redux-saga/effects';
 import { getPoints } from './selectors';
-import { getCoordsFromPoints, updateMapReferencePoints, debounce } from '../utils';
+import { getCoordsFromPoints, updateMapReferencePoints } from '../utils';
 import { IAdress } from '../typings';
 import { Dispatch } from 'redux';
 
@@ -32,39 +32,27 @@ const routerCreator = (map: any, points: IAdress[], dispatch: Dispatch): any => 
     // fits map to container size
     map.container.fitToViewport();
 
-    const dispatchDragStart = (evt: any): void => {
+    const wayPointEvents = router.getWayPoints().events;
+
+    const dragEndHandler = (evt: any): void => {
         const targetIdx = evt.get('target').properties.get('index');
-        // update point list with new coords
-        router.getWayPoints().events.add('dragend', (evt: any) => {
-            console.log('target idx ', targetIdx);
-            dispatch({
-                type: 'POINT_DRAGGED',
-                payload: {
-                    coords: evt.get('target').geometry.getCoordinates(), 
-                    idx: targetIdx
-                }
-            });
+        dispatch({
+            type: 'POINT_DRAGGED',
+            payload: {
+                coords: evt.get('target').geometry.getCoordinates(), 
+                idx: targetIdx
+            }
         });
+        wayPointEvents.remove('dragend', dragEndHandler);
     };
-    const debouncedDrag = debounce(dispatchDragStart, 1000);
+
+    const dispatchDragStart = (): void => {
+        // update point list with new coords
+        wayPointEvents.add('dragend', dragEndHandler);
+    };
     
-    router.getWayPoints().events.add('dragstart', debouncedDrag); 
-    // (evt: any) => {
-        
-        // const targetIdx = evt.get('target').properties.get('index');
-        // // update point list with new coords
-        // router.getWayPoints().events.add('dragend', (evt: any) => {
-        //     console.log('target idx ', targetIdx);
-        //     dispatch({
-        //         type: 'POINT_DRAGGED',
-        //         payload: {
-        //             coords: evt.get('target').geometry.getCoordinates(), 
-        //             idx: targetIdx
-        //         }
-        //     });
-        // });
-        
-    // });
+    wayPointEvents.add('dragstart', dispatchDragStart); 
+
     return router;
 };
 

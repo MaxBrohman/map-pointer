@@ -1,4 +1,4 @@
-import { takeEvery, put, select } from 'redux-saga/effects';
+import { takeLatest, put, select } from 'redux-saga/effects';
 import { IAdress, IUpdatedAction } from '../typings';
 import { getPoints, getRouter } from './selectors';
 import { updateMapReferencePoints, updateArrayWithNewItem } from '../utils';
@@ -25,5 +25,5 @@ function* updateDraggingPoint({ payload: { idx, coords } }: IUpdatedAction): Ite
 };
 
 export function* watchPointsDrag (): IterableIterator<any> {
-    yield takeEvery('POINT_DRAGGED', updateDraggingPoint);
+    yield takeLatest('POINT_DRAGGED', updateDraggingPoint);
 };

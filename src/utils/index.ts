@@ -5,4 +5,3 @@ export * from './update-map-reference-points';
 export * from './get-before-idx-arr';
 export * from './get-after-idx-arr';
 export * from './update-array-with-new-item';
-export * from './debounce';
