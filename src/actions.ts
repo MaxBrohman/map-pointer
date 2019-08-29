@@ -57,3 +57,23 @@ export const pointUpdated = (id: number, prop: string | boolean): IUpdatedAction
         }
     }
 };
+
+export const draggingListItem = (id: number, evt: React.MouseEvent): IUpdatedAction => {
+    return {
+        type: 'DRAGGING_LIST_ITEM',
+        payload: {
+            id,
+            evt
+        }
+    }
+};
+
+export const listItemDropped = (id: number, evt: React.DragEvent): IUpdatedAction => {
+    return {
+        type: 'LIST_ITEM_DROPPED',
+        payload: {
+            id,
+            evt
+        }
+    }
+};

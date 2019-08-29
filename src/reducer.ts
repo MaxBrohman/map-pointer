@@ -11,7 +11,6 @@ const initialState: IState = {
 };
 
 export const reducer = (state: IState = initialState, action: IUpdatedAction): IState => {
-    console.log(action.type, action.payload);
     switch (action.type) {
         case 'MAP_LOADED': {
             const { map, router } = action.payload;

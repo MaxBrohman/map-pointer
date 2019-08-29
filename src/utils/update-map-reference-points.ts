@@ -14,7 +14,7 @@ export const updateMapReferencePoints = async (router: any, points: IAdress[]): 
         });
     };
     router.model.setReferencePoints(getCoordsFromPoints(points));
-    try{
+    try {
         await getRefPoints();
     } catch (err) {
         console.error(err.message);
@@ -26,9 +26,10 @@ export const updateMapReferencePoints = async (router: any, points: IAdress[]): 
             point.options.setName(pointName);
             point.options.set({
                 preset: "islands#grayStretchyIcon",
+                // setting custom point view
                 iconContentLayout: ymaps.templateLayoutFactory.createClass(
                     `${pointName}`
-                ),
+                )
             });
         });
     }

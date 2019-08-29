@@ -3,6 +3,8 @@ export interface IPLICMapDispatchToProps {
     onInput: (id: number, name: string) => void;
     onFormSubmit: (id: number) => void;
     onEdit: (id: number) => void;
+    onItemDrag: (id: number, evt: React.DragEvent) => void;
+    onItemDrop: (id: number, evt: React.DragEvent) => void;
 }
 
 export interface IPointsListItemContainerProps extends IPLICMapDispatchToProps {

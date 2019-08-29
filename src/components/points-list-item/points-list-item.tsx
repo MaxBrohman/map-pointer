@@ -3,9 +3,17 @@ import { IPointsListItemProps } from '../../typings';
 
 import './points-list-item.sass';
 
-const PopintsListItem = ({ name, onDelete, id, onEdit }: IPointsListItemProps): JSX.Element => {
+const PopintsListItem = (props: IPointsListItemProps): JSX.Element => {
+    const { name, onDelete, id, onEdit, onDragStart, onDrop, onDragOver, onDragLeave } = props;
     return (
-        <li className="list-group-item">
+        <li
+            className="list-group-item points-list-item"
+            onDragStart={ onDragStart }
+            onDrop={ onDrop }
+            onDragOver={ onDragOver }
+            onDragLeave={ onDragLeave }
+            draggable
+        >
             { name }
             <button
                 type="button"
@@ -24,6 +32,5 @@ const PopintsListItem = ({ name, onDelete, id, onEdit }: IPointsListItemProps): 
         </li>
     );
 };
-
 
 export default PopintsListItem;

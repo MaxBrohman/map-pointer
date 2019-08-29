@@ -1,18 +1,12 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 import { getPoints, getRouter } from './selectors';
-import { getIndex, getAfterIdxArray, getBeforeIdxArray, updateMapReferencePoints } from '../utils';
-import { IAdress, IUpdatedAction } from '../typings';
-
-// get new array of map points without deleted point
-const getNewMapPoints = (id: number, points: IAdress[]): IAdress[] => {
-    const idx = getIndex(points, id);
-    return [...getBeforeIdxArray(points, idx), ...getAfterIdxArray(points, idx)];
-};
+import { getArrAfterDelete, updateMapReferencePoints } from '../utils';
+import { IUpdatedAction } from '../typings';
 
 function* updateMapPoints({ payload }: IUpdatedAction): IterableIterator<any> {
     const points = yield select(getPoints);
     const router = yield select(getRouter);
-    const newPoints = yield getNewMapPoints(payload, points);
+    const newPoints = yield getArrAfterDelete(payload, points);
     yield put({
         type: 'MAP_POINTS_LIST_UPDATED',
         payload: newPoints
