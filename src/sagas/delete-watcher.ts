@@ -1,4 +1,4 @@
-import { takeEvery, put, select } from 'redux-saga/effects';
+import { takeLatest, put, select } from 'redux-saga/effects';
 import { getPoints, getRouter } from './selectors';
 import { getArrAfterDelete, updateMapReferencePoints } from '../utils';
 import { IUpdatedAction } from '../typings';
@@ -16,5 +16,5 @@ function* updateMapPoints({ payload }: IUpdatedAction): IterableIterator<any> {
 };
 
 export function* watchDeleteItem(): IterableIterator<any> {
-    yield takeEvery('DELETE_ITEM', updateMapPoints);
+    yield takeLatest('DELETE_ITEM', updateMapPoints);
 };

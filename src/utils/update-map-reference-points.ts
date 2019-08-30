@@ -1,10 +1,10 @@
 import { getCoordsFromPoints } from './';
-import { IAdress } from '../typings';
+import { IAdress, IYmaps, IRouter, IWayPoint } from '../typings';
 
-declare const ymaps: any;
+declare const ymaps: IYmaps;
 
 // updates points on map
-export const updateMapReferencePoints = async (router: any, points: IAdress[]): Promise<void> => {
+export const updateMapReferencePoints = async (router: IRouter, points: IAdress[]): Promise<void> => {
     // updates points names
     const getRefPoints = (): Promise<boolean> => {
         return new Promise((resolve) => {
@@ -21,7 +21,7 @@ export const updateMapReferencePoints = async (router: any, points: IAdress[]): 
     }
     
     if (points.length) {
-        router.getWayPoints().each((point: any, i: number) => {
+        router.getWayPoints().each((point: IWayPoint, i: number) => {
             const pointName = points[i].name;
             point.options.setName(pointName);
             point.options.set({

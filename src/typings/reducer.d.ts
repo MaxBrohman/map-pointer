@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import { IMap, IRouter } from './';
 
 export interface IState {
     points: IAdress[];
@@ -6,8 +7,8 @@ export interface IState {
     newPlacesCoords: number[];
     error: boolean;
     loading: boolean;
-    map: any;
-    router: any;
+    map: IMap | null;
+    router: IRouter | null;
 }
 
 export interface IAdress {

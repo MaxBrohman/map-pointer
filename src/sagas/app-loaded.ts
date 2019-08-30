@@ -1,13 +1,13 @@
 import { takeLeading, put, select } from 'redux-saga/effects';
 import { getPoints } from './selectors';
 import { getCoordsFromPoints, updateMapReferencePoints } from '../utils';
-import { IAdress } from '../typings';
+import { IAdress, IYmaps, IMap, IRouter, IWayPointEvent } from '../typings';
 import { Dispatch } from 'redux';
 
-declare const ymaps: any;
+declare const ymaps: IYmaps;
 
 // handles map settings and creation
-const mapApiHandler = (): any => {
+const mapApiHandler = (): IMap => {
     const map = new ymaps.Map("map", {
         center: [55.76, 37.64],
         zoom: 7
@@ -16,7 +16,7 @@ const mapApiHandler = (): any => {
 };
 
 // creates and returns multiRoute object
-const routerCreator = (map: any, points: IAdress[], dispatch: Dispatch): any => {
+const routerCreator = (map: IMap, points: IAdress[], dispatch: Dispatch): IRouter => {
     const coords = getCoordsFromPoints(points);
 
     const router = new ymaps.multiRouter.MultiRoute({
@@ -34,12 +34,13 @@ const routerCreator = (map: any, points: IAdress[], dispatch: Dispatch): any => 
 
     const wayPointEvents = router.getWayPoints().events;
 
-    const dragEndHandler = (evt: any): void => {
-        const targetIdx = evt.get('target').properties.get('index');
+    const dragEndHandler = (evt: IWayPointEvent): void => {
+        const target = evt.get('target');
+        const targetIdx = target.properties.get('index');
         dispatch({
             type: 'POINT_DRAGGED',
             payload: {
-                coords: evt.get('target').geometry.getCoordinates(), 
+                coords: target.geometry.getCoordinates(), 
                 idx: targetIdx
             }
         });
@@ -57,7 +58,7 @@ const routerCreator = (map: any, points: IAdress[], dispatch: Dispatch): any => 
 };
 
 // decorator for getting map
-const enableMapApi = (points: IAdress[], dispatch: Dispatch): Promise<any> => {
+const enableMapApi = (points: IAdress[], dispatch: Dispatch): Promise<{ map: IMap, router: IRouter }> => {
     return new Promise((resolve) => {
         ymaps.ready().then(() => {
             const map = mapApiHandler();
