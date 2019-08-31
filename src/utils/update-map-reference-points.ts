@@ -6,7 +6,6 @@ declare const ymaps: IYmaps;
 // updates points on map
 export const updateMapReferencePoints = async (router: IRouter, points: IAdress[]): Promise<void> => {
     // updates points names
-    console.log('new points ', points);
     const getRefPoints = (): Promise<IWayPoints> => {
         return new Promise((resolve) => {
             router.model.events.add('requestsuccess', () => {
@@ -15,7 +14,6 @@ export const updateMapReferencePoints = async (router: IRouter, points: IAdress[
         });
     };
     const coords = getCoordsFromPoints(points);
-    console.log('coords from points ', coords);
     router.model.setReferencePoints(coords);
     try {
         await getRefPoints();
@@ -24,7 +22,6 @@ export const updateMapReferencePoints = async (router: IRouter, points: IAdress[
     }
     if (points.length) {
         router.getWayPoints().each((point: IWayPoint, i: number) => {
-            console.log('point ' + i, point);
             const pointName = points[i].name;
 
             point.properties.set('index', i);
