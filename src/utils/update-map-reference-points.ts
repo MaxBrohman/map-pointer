@@ -1,29 +1,36 @@
 import { getCoordsFromPoints } from './';
-import { IAdress, IYmaps, IRouter, IWayPoint } from '../typings';
+import { IAdress, IYmaps, IRouter, IWayPoint, IWayPoints } from '../typings';
 
 declare const ymaps: IYmaps;
 
 // updates points on map
 export const updateMapReferencePoints = async (router: IRouter, points: IAdress[]): Promise<void> => {
     // updates points names
-    const getRefPoints = (): Promise<boolean> => {
+    console.log('new points ', points);
+    const getRefPoints = (): Promise<IWayPoints> => {
         return new Promise((resolve) => {
             router.model.events.add('requestsuccess', () => {
-                resolve(true);
+                resolve(router.getWayPoints());
             });
         });
     };
-    router.model.setReferencePoints(getCoordsFromPoints(points));
+    const coords = getCoordsFromPoints(points);
+    console.log('coords from points ', coords);
+    router.model.setReferencePoints(coords);
     try {
         await getRefPoints();
     } catch (err) {
         console.error(err.message);
     }
-    
     if (points.length) {
         router.getWayPoints().each((point: IWayPoint, i: number) => {
+            console.log('point ' + i, point);
             const pointName = points[i].name;
-            point.options.setName(pointName);
+
+            point.properties.set('index', i);
+            point.properties.set('coordinates', points[i].coords);
+            point.geometry.setCoordinates(points[i].coords);
+
             point.options.set({
                 preset: "islands#grayStretchyIcon",
                 // setting custom point view

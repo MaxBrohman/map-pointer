@@ -1,4 +1,4 @@
-import { takeEvery, put, select } from 'redux-saga/effects';
+import { takeLatest, put, select } from 'redux-saga/effects';
 import { IAdress, IUpdatedAction } from '../typings';
 import { getMap, getPoints, getRouter } from './selectors';
 import { updateMapReferencePoints } from '../utils';
@@ -31,8 +31,9 @@ function* addNewMapPoint({ payload }: IUpdatedAction): IterableIterator<any> {
         payload: newPoints
     });
     yield updateMapReferencePoints(router, newPoints);
+
 };
 
 export function* watchNewPoint (): IterableIterator<any> {
-    yield takeEvery('NEW_POINT_ADDED', addNewMapPoint);
+    yield takeLatest('NEW_POINT_ADDED', addNewMapPoint);
 };

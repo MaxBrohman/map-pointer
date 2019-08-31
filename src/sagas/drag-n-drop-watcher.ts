@@ -13,6 +13,7 @@ const onDragStartHandler = (id: number, evt: React.DragEvent): void => {
 
 // takes dragging item from points arr, removes it and returns new array with right order
 const onDropHandler = (id: number, evt: React.DragEvent, points: IAdress[]): IAdress[] => {
+    console.log('old points ', points);
     const target = (evt.target as HTMLElement);
     const bounds = (target.getBoundingClientRect() as DOMRect);
     const offset = bounds.y + bounds.height / 2;
@@ -44,6 +45,7 @@ function* onDrop({ payload: { id, evt } }: IUpdatedAction): IterableIterator<any
     const points = yield select(getPoints);
     const router = yield select(getRouter);
     const updatedPoints = yield onDropHandler(id, evt, points);
+    console.log('new points ', updatedPoints);
     yield put({
         type: 'MAP_POINTS_LIST_UPDATED',
         payload: updatedPoints

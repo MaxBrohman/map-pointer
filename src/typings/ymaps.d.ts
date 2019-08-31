@@ -49,7 +49,7 @@ interface IMapContainer {
     fitToViewport: () => void;
 }
 
-interface IWayPoints {
+export interface IWayPoints {
     events: IWayPointsEvents;
     each: (callback: (point: IWayPoint, i: number) => void) => void;
 }
@@ -85,13 +85,24 @@ interface IYmapsTemplateFactory {
 interface IRouterModel {
     events: IWayPointsEvents;
     setReferencePoints: (coords: number[][]) => void;
+    getParams: () => void;
 }
 
 export interface IWayPoint {
     options: IWayPointOptions;
+    properties: IWayPointProperties;
+    geometry: IWayPointGeometry;
 }
 
 interface IWayPointOptions {
     setName: (name: string) => void;
     set: ({ preset: string, iconContentLayout: string }) => void;
+}
+
+interface IWayPointProperties {
+    set: (prop: string, value: number | number[]) => void;
+}
+
+interface IWayPointGeometry {
+    setCoordinates: (coords: number[]) => void;
 }

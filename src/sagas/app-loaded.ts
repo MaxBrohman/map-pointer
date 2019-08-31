@@ -18,7 +18,7 @@ const mapApiHandler = (): IMap => {
 // creates and returns multiRoute object
 const routerCreator = (map: IMap, points: IAdress[], dispatch: Dispatch): IRouter => {
     const coords = getCoordsFromPoints(points);
-
+    
     const router = new ymaps.multiRouter.MultiRoute({
         referencePoints: coords,
     }, {
@@ -33,7 +33,7 @@ const routerCreator = (map: IMap, points: IAdress[], dispatch: Dispatch): IRoute
     map.container.fitToViewport();
 
     const wayPointEvents = router.getWayPoints().events;
-
+    
     const dragEndHandler = (evt: IWayPointEvent): void => {
         const target = evt.get('target');
         const targetIdx = target.properties.get('index');
@@ -53,7 +53,7 @@ const routerCreator = (map: IMap, points: IAdress[], dispatch: Dispatch): IRoute
     };
     
     wayPointEvents.add('dragstart', dispatchDragStart); 
-
+    
     return router;
 };
 
@@ -76,7 +76,7 @@ const loadMap = (dispatch: Dispatch) => {
         const points = yield select(getPoints);
         const { map, router } = yield enableMapApi(points, dispatch);
         if (points.length) {
-            yield updateMapReferencePoints(router, points);
+            updateMapReferencePoints(router, points);
         }
         yield put({
             type: 'MAP_LOADED',
