@@ -14,19 +14,19 @@ const onDragStartHandler = (id: number, evt: React.DragEvent): void => {
 // takes dragging item from points arr, removes it and returns new array with right order
 const onDropHandler = (id: number, evt: React.DragEvent, points: IAdress[]): IAdress[] => {
     const draggingItemId = JSON.parse(evt.dataTransfer.getData('dragContent')).id;
+    const target = (evt.target as HTMLElement);
+    // whatever style has been set by dragover, needs to be reset
+    target.style.cssText = '';
     // if item dragged on it self, then no need to change anything
     if (id === draggingItemId) {
         return [];
     }
-    const target = (evt.target as HTMLElement);
     const bounds = (target.getBoundingClientRect() as DOMRect);
     const offset = bounds.y + bounds.height / 2;
-    
     const cutPoints = getArrAfterDelete(draggingItemId, points);
     const draggingItemIdx = getIndex(points, draggingItemId);
     const dropabbleItemIdx = getIndex(cutPoints, id);
-    // whatever style has been set by dragover, needs to be reset
-    target.style.cssText = '';
+    
     // if cursor is lower then center of list item, then dragging item should be appended before
     if (evt.clientY - offset > 0) {
         return [
