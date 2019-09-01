@@ -8,11 +8,10 @@ declare const ymaps: IYmaps;
 
 // handles map settings and creation
 const mapApiHandler = (): IMap => {
-    const map = new ymaps.Map("map", {
+    return new ymaps.Map("map", {
         center: [55.76, 37.64],
         zoom: 7
     });
-    return map;
 };
 
 // creates and returns multiRoute object
@@ -76,7 +75,7 @@ const loadMap = (dispatch: Dispatch) => {
         const points = yield select(getPoints);
         const { map, router } = yield enableMapApi(points, dispatch);
         if (points.length) {
-            updateMapReferencePoints(router, points);
+            yield updateMapReferencePoints(router, points);
         }
         yield put({
             type: 'MAP_LOADED',

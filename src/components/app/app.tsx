@@ -26,10 +26,6 @@ class App extends React.Component<IAppProps> {
     public render(): JSX.Element {
         const { name, onInput, onFormSubmit, loading } = this.props;
 
-        if (loading) {
-            return <Spinner />;
-        }
-        
         return (
             <div className="container d-flex align-items-stretch app-container">
                 <div className="d-flex flex-column flex-grow-1 left-container">
@@ -44,6 +40,7 @@ class App extends React.Component<IAppProps> {
                 <div className="d-flex flex-column flex-grow-1">
                     <MapContainer />
                 </div>
+                { loading && <Spinner /> }
             </div>
         );
     }
