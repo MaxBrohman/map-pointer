@@ -13,10 +13,15 @@ const onDragStartHandler = (id: number, evt: React.DragEvent): void => {
 
 // takes dragging item from points arr, removes it and returns new array with right order
 const onDropHandler = (id: number, evt: React.DragEvent, points: IAdress[]): IAdress[] => {
+    const draggingItemId = JSON.parse(evt.dataTransfer.getData('dragContent')).id;
+    // if item dragged on it self, then no need to change anything
+    if (id === draggingItemId) {
+        return [];
+    }
     const target = (evt.target as HTMLElement);
     const bounds = (target.getBoundingClientRect() as DOMRect);
     const offset = bounds.y + bounds.height / 2;
-    const draggingItemId = JSON.parse(evt.dataTransfer.getData('dragContent')).id;
+    
     const cutPoints = getArrAfterDelete(draggingItemId, points);
     const draggingItemIdx = getIndex(points, draggingItemId);
     const dropabbleItemIdx = getIndex(cutPoints, id);
@@ -45,12 +50,14 @@ function* onDrag({ payload: { id, evt } }: IUpdatedAction): IterableIterator<any
 function* onDrop({ payload: { id, evt } }: IUpdatedAction): IterableIterator<any> {
     const points = yield select(getPoints);
     const router = yield select(getRouter);
-    const updatedPoints = yield onDropHandler(id, evt, points);
-    yield put({
-        type: 'MAP_POINTS_LIST_UPDATED',
-        payload: updatedPoints
-    });
-    yield updateMapReferencePoints(router, updatedPoints);
+    const updatedPoints: IAdress[] = yield onDropHandler(id, evt, points);
+    if (updatedPoints.length) {
+        yield put({
+            type: 'MAP_POINTS_LIST_UPDATED',
+            payload: updatedPoints
+        });
+        yield updateMapReferencePoints(router, updatedPoints);
+    }
 }; 
 
 export function* watchDragNDrop (): IterableIterator<any> {
